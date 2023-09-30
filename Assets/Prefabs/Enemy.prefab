@@ -9,14 +9,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3794785059493531951}
-  - component: {fileID: 798273182507784689}
+  - component: {fileID: 2434854645177079727}
   - component: {fileID: 7141303669425517973}
   - component: {fileID: 2273433005129956018}
   - component: {fileID: 5232587091202370959}
   - component: {fileID: 1352985703356597076}
   - component: {fileID: 1002904355777415445}
   m_Layer: 0
-  m_Name: Ally
+  m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37,7 +37,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &798273182507784689
+--- !u!114 &2434854645177079727
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -46,13 +46,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7246342863741445018}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 917ab0d7ce454b41ace6677b6caea299, type: 3}
+  m_Script: {fileID: 11500000, guid: c986c5cee8f04f97855b41e24fe1e5f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _formationOffset: {x: 3.85, y: 0, z: -3.64}
-  _neutralMaterial: {fileID: 2100000, guid: e58095d91a19f9743bc30181e83fa531, type: 2}
-  _allyMaterial: {fileID: 2100000, guid: c0a9630c8d772644289ae36ba095ac4f, type: 2}
-  _captureTime: 1.5
+  _stance: 2
+  _behavior: 1
+  _leaderEnemy: {fileID: 0}
   _weapons:
   - {fileID: 7141303669425517973}
 --- !u!114 &7141303669425517973
@@ -103,7 +102,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e58095d91a19f9743bc30181e83fa531, type: 2}
+  - {fileID: 2100000, guid: 46262d683aaa4cd44bf2f1d12c0e5553, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

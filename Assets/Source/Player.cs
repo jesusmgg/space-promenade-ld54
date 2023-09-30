@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Player : MonoBehaviour
 {
@@ -14,8 +15,8 @@ public class Player : MonoBehaviour
     [SerializeField] float _maxFov = 100f;
     [SerializeField] float _fovPerAlly = 2.5f;
     [SerializeField] float _fovSpeed = 1f;
-    
-    [SerializeField] Weapon _weapon;
+
+    [SerializeField] List<Weapon> _weapons;
 
     float _normalizedFov;
 
@@ -38,7 +39,10 @@ public class Player : MonoBehaviour
         UpdateTransform();
         UpdateCaptures();
 
-        _weapon.Shoot(Vector3.zero);
+        foreach (Weapon weapon in _weapons)
+        {
+            weapon.Shoot(Vector3.zero);
+        }
     }
 
     void UpdateTransform()
@@ -85,7 +89,8 @@ public class Player : MonoBehaviour
         _normalizedFov = Mathf.MoveTowards(_normalizedFov, currentNormalizedFov, _fovSpeed * Time.deltaTime);
         _mainCamera.fieldOfView = Mathf.Lerp(_minFov, _maxFov, _normalizedFov);
     }
-void OnDrawGizmos()
+
+    void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, _captureRadius);
     }

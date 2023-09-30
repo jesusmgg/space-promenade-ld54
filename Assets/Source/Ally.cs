@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Ally : MonoBehaviour
@@ -10,7 +11,7 @@ public class Ally : MonoBehaviour
 
     [SerializeField] float _captureTime;
 
-    [SerializeField] Weapon _weapon;
+    [SerializeField] List<Weapon> _weapons;
 
     ShipStance _stance = ShipStance.Neutral;
 
@@ -36,8 +37,6 @@ public class Ally : MonoBehaviour
 
     void Update()
     {
-        Transform tr = transform;
-
         if (Random.value > .99f)
         {
             _targetPositionFluctuation = new Vector3(Random.Range(-.5f, .5f), Random.Range(-.5f, .5f));
@@ -45,12 +44,17 @@ public class Ally : MonoBehaviour
 
         if (_stance == ShipStance.Ally && !_isCapturing)
         {
+            Transform tr = transform;
+
             _currentPositionFluctuation =
                 Vector3.MoveTowards(_currentPositionFluctuation, _targetPositionFluctuation, Time.deltaTime * 0.1f);
             tr.position = TargetPosition + _currentPositionFluctuation;
             tr.rotation = TargetRotation;
 
-            _weapon.Shoot(Vector3.zero);
+            foreach (Weapon weapon in _weapons)
+            {
+                weapon.Shoot(Vector3.zero);
+            }
         }
     }
 
