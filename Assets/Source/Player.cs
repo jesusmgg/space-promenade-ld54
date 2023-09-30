@@ -14,10 +14,11 @@ public class Player : MonoBehaviour
     [SerializeField] float _maxFov = 100f;
     [SerializeField] float _fovPerAlly = 2.5f;
     [SerializeField] float _fovSpeed = 1f;
+    
+    [SerializeField] Weapon _weapon;
 
     float _normalizedFov;
 
-    float _speed;
     Vector3 _mousePos;
 
     int _allies;
@@ -25,7 +26,7 @@ public class Player : MonoBehaviour
     Camera _mainCamera;
     readonly Collider[] _captureBuffer = new Collider[10];
 
-    public float Speed => _speed;
+    float Speed { get; set; }
 
     void Start()
     {
@@ -36,6 +37,8 @@ public class Player : MonoBehaviour
     {
         UpdateTransform();
         UpdateCaptures();
+
+        _weapon.Shoot(Vector3.zero);
     }
 
     void UpdateTransform()
@@ -52,11 +55,11 @@ public class Player : MonoBehaviour
         flatMousePos.y = 0f;
         Vector3 direction = (flatMousePos - transform.position).normalized;
 
-        _speed += (_acceleration * Time.deltaTime * Input.GetAxis("Fire2"));
-        _speed -= _deceleration * Time.deltaTime;
-        _speed = Mathf.Clamp(_speed, 0f, _topSpeed);
+        Speed += (_acceleration * Time.deltaTime * Input.GetAxis("Fire2"));
+        Speed -= _deceleration * Time.deltaTime;
+        Speed = Mathf.Clamp(Speed, 0f, _topSpeed);
 
-        transform.Translate(direction * _speed, Space.World);
+        transform.Translate(direction * Speed, Space.World);
 
         // Rotate ship
         transform.LookAt(flatMousePos, Vector3.up);
@@ -82,8 +85,7 @@ public class Player : MonoBehaviour
         _normalizedFov = Mathf.MoveTowards(_normalizedFov, currentNormalizedFov, _fovSpeed * Time.deltaTime);
         _mainCamera.fieldOfView = Mathf.Lerp(_minFov, _maxFov, _normalizedFov);
     }
-
-    void OnDrawGizmos()
+void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, _captureRadius);
     }

@@ -10,6 +10,8 @@ public class Ally : MonoBehaviour
 
     [SerializeField] float _captureTime;
 
+    [SerializeField] Weapon _weapon;
+
     ShipStance _stance = ShipStance.Neutral;
 
     bool _isCapturing;
@@ -47,6 +49,8 @@ public class Ally : MonoBehaviour
                 Vector3.MoveTowards(_currentPositionFluctuation, _targetPositionFluctuation, Time.deltaTime * 0.1f);
             tr.position = TargetPosition + _currentPositionFluctuation;
             tr.rotation = TargetRotation;
+
+            _weapon.Shoot(Vector3.zero);
         }
     }
 

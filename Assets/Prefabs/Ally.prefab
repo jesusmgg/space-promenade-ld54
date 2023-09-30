@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3794785059493531951}
   - component: {fileID: 798273182507784689}
+  - component: {fileID: 7141303669425517973}
   - component: {fileID: 2273433005129956018}
   - component: {fileID: 5232587091202370959}
   - component: {fileID: 1352985703356597076}
@@ -52,6 +53,25 @@ MonoBehaviour:
   _neutralMaterial: {fileID: 2100000, guid: e58095d91a19f9743bc30181e83fa531, type: 2}
   _allyMaterial: {fileID: 2100000, guid: c0a9630c8d772644289ae36ba095ac4f, type: 2}
   _captureTime: 1.5
+  _weapon: {fileID: 7141303669425517973}
+--- !u!114 &7141303669425517973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7246342863741445018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aade2314f9354982b67531811862b2ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _projectilePrefab: {fileID: 4512885718757508387, guid: 761a9c3e620e8ca4f931c2db1144e517, type: 3}
+  _targetShipStance: 2
+  _projectileDamage: 1
+  _projectileSpeed: 30
+  _accuracy: 5
+  _reloadTime: 5
 --- !u!33 &2273433005129956018
 MeshFilter:
   m_ObjectHideFlags: 0
