@@ -40,7 +40,7 @@ public class Ally : Ship
             _targetPositionFluctuation = new Vector3(Random.Range(-.5f, .5f), Random.Range(-.5f, .5f));
         }
 
-        if (ShipStance == ShipStance.Ally && !_isCapturing)
+        if (Stance == ShipStance.Ally && !_isCapturing)
         {
             Transform tr = transform;
 
@@ -59,9 +59,9 @@ public class Ally : Ship
     /// <returns>true if the ally was captured.</returns>
     public bool Capture()
     {
-        if (ShipStance == ShipStance.Neutral)
+        if (Stance == ShipStance.Neutral)
         {
-            ShipStance = ShipStance.Ally;
+            Stance = ShipStance.Ally;
             _renderer.material = _allyMaterial;
 
             StartCoroutine(AnimateCapture());
