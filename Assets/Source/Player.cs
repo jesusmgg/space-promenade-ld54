@@ -114,6 +114,7 @@ public class Player : Ship
             ally.Destroy();
         }
 
+        ParticleManager.EmitHitLarge(transform.position);
         base.Destroy();
     }
 

@@ -20,6 +20,7 @@ public class ShipSpawner : Ship
     protected override void Awake()
     {
         _player = FindFirstObjectByType<Player>();
+        ParticleManager = FindFirstObjectByType<ParticleManager>();
     }
 
     void Start()
@@ -63,6 +64,7 @@ public class ShipSpawner : Ship
         {
             _player.TargetEnemySpawners.Remove(this);
         }
+        ParticleManager.EmitExplosionLarge(transform.position);
         base.Destroy();
     }
 }

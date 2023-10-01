@@ -105,6 +105,7 @@ public class Ally : Ship
             _player.AllyList.Remove(this);
         }
 
+        ParticleManager.EmitHitLarge(transform.position);
         base.Destroy();
     }
 }

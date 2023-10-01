@@ -4,6 +4,7 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] float _maxLifeTimeSeconds = 10;
     [SerializeField] ShipStance _targetShipStance;
+    [SerializeField] ParticleSystem _hitParticleSystem;
 
     int _damage;
     float _speed;
@@ -14,9 +15,12 @@ public class Projectile : MonoBehaviour
     SphereCollider _collider;
     Collider[] _collisionBuffer = new Collider[10];
 
+    ParticleManager _particleManager;
+
     void Awake()
     {
         _collider = GetComponent<SphereCollider>();
+        _particleManager = FindFirstObjectByType<ParticleManager>();
     }
 
     void Start()
@@ -55,6 +59,7 @@ public class Projectile : MonoBehaviour
             Collider collider = _collisionBuffer[i];
             if (collider.CompareTag("Wall"))
             {
+                _particleManager.EmitHitSmall(transform.position);
                 Destroy();
                 return;
             }
@@ -63,6 +68,15 @@ public class Projectile : MonoBehaviour
             if (ship != null && (_targetShipStance == ship.Stance ||
                                  (_targetShipStance == ShipStance.Player && ship.Stance == ShipStance.Ally)))
             {
+
+                if (ship is ShipSpawner)
+                {
+                    _particleManager.EmitHitMedium(transform.position);
+                }
+                else
+                {
+                    _particleManager.EmitHitSmall(transform.position);
+                }
                 ship.HitPoints -= _damage;
                 Destroy();
             }

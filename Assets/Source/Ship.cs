@@ -9,6 +9,8 @@ public class Ship : MonoBehaviour
     float _collisionRadius;
 
     Collider[] _wallCollisionBuffer = new Collider[100];
+    
+    protected ParticleManager ParticleManager;
 
     public ShipStance Stance
     {
@@ -32,6 +34,7 @@ public class Ship : MonoBehaviour
     protected virtual void Awake()
     {
         Collider = GetComponent<Collider>();
+        ParticleManager = FindFirstObjectByType<ParticleManager>();
         _collisionRadius = Collider != null ? Collider.bounds.extents.z : 0f;
     }
 

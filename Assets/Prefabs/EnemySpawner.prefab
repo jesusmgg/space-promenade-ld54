@@ -116,7 +116,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 46262d683aaa4cd44bf2f1d12c0e5553, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -185,7 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4382f88788754fadb53150b39ed51676, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hitPoints: 2
+  _hitPoints: 5
   _shipStance: 3
   _shipPrefab: {fileID: 2434854645177079727, guid: b7d01adba6d66fd47a715abd64094962, type: 3}
   _shipParent: {fileID: 0}

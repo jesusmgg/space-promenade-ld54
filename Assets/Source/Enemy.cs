@@ -103,6 +103,7 @@ public class Enemy : Ship
                 {
                     TargetAreaCollider = _arena.GetComponent<Collider>();
                 }
+
                 _targetPosition = Util.GetRandomPointInBounds(TargetAreaCollider);
                 Vector3 localScale = TargetAreaCollider.transform.localScale;
                 _targetPosition -= TargetAreaCollider.bounds.center / 4f;
@@ -120,7 +121,7 @@ public class Enemy : Ship
                     _behavior = EnemyBehavior.MoveRandomly;
                     break;
                 }
-                
+
                 _targetPosition = _player.transform.position + Util.GetRandomVector3(-5f, 5f);
                 StartCoroutine(CheckForWallsInTargetDirection());
                 break;
@@ -155,6 +156,12 @@ public class Enemy : Ship
                 UpdateTarget(EnemyBehavior.MoveRandomly);
             }
         }
+    }
+
+    public override void Destroy()
+    {
+        ParticleManager.EmitHitLarge(transform.position);
+        base.Destroy();
     }
 
     void OnDrawGizmos()
