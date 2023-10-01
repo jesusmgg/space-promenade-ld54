@@ -18,6 +18,8 @@ public class Player : Ship
 
     [SerializeField] List<Weapon> _weapons;
 
+    [SerializeField] int _enemySpawnerTarget = 1;
+
     float _normalizedFov;
 
     bool _hasEngineOn;
@@ -31,6 +33,7 @@ public class Player : Ship
     float Speed { get; set; }
 
     public float Allies { get; set; }
+    public int EnemySpawnerTarget => _enemySpawnerTarget;
 
     void Start()
     {
