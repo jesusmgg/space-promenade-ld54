@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -23,14 +24,18 @@ public class Player : Ship
     [FormerlySerializedAs("_targetEnemySpawners")] [SerializeField]
     public List<ShipSpawner> TargetEnemySpawners;
 
+    [SerializeField] string _nextLevel;
+
     float _normalizedFov;
 
-    bool _hasEngineOn;
     Vector3 _mousePos;
+
+    bool _isAdvancingLevel;
 
     Camera _mainCamera;
     readonly Collider[] _captureBuffer = new Collider[100];
 
+    public bool HasEngineOn { get; private set; }
     float Speed { get; set; }
 
     public List<Ally> AllyList { get; } = new();
@@ -54,6 +59,19 @@ public class Player : Ship
         {
             weapon.Shoot();
         }
+
+        if (!_isAdvancingLevel && TargetSpawnersLeft == 0)
+        {
+            StartCoroutine(LoadNextLevel());
+        }
+    }
+
+    IEnumerator LoadNextLevel()
+    {
+        _hitPoints = 999;
+        _isAdvancingLevel = true;
+        yield return new WaitForSeconds(3f);
+        LevelManager.LoadScene(_nextLevel);
     }
 
     void UpdateTransform()
@@ -61,10 +79,10 @@ public class Player : Ship
         // Engines
         if (Input.GetKeyDown(KeyCode.E))
         {
-            _hasEngineOn = !_hasEngineOn;
+            HasEngineOn = !HasEngineOn;
         }
 
-        float engine = _hasEngineOn ? 1f : 0f;
+        float engine = HasEngineOn ? 1f : 0f;
 
         // Get mouse position
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);

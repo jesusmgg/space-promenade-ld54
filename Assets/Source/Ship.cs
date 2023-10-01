@@ -12,6 +12,7 @@ public class Ship : MonoBehaviour
 
     protected ParticleManager ParticleManager;
     protected AudioManager AudioManager;
+    protected LevelManager LevelManager;
 
     public ShipStance Stance
     {
@@ -39,6 +40,7 @@ public class Ship : MonoBehaviour
 
         ParticleManager = FindFirstObjectByType<ParticleManager>();
         AudioManager = FindFirstObjectByType<AudioManager>();
+        LevelManager = FindFirstObjectByType<LevelManager>();
     }
 
     protected virtual void Update()
