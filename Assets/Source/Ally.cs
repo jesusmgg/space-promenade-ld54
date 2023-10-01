@@ -53,7 +53,7 @@ public class Ally : MonoBehaviour
 
             foreach (Weapon weapon in _weapons)
             {
-                weapon.Shoot(Vector3.zero);
+                weapon.Shoot();
             }
         }
     }

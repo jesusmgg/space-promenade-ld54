@@ -45,7 +45,7 @@ public class Enemy : MonoBehaviour
     {
         foreach (Weapon weapon in _weapons)
         {
-            weapon.Shoot(Vector3.zero);
+            weapon.Shoot();
         }
 
         if (_behavior != EnemyBehavior.Static)

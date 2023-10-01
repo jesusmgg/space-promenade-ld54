@@ -1061,6 +1061,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0f7b502a3f42b4b281b0fa86d43ef4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stance: 0
   _acceleration: 2
   _deceleration: 1.5
   _topSpeed: 0.2
@@ -1112,9 +1113,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _projectilePrefab: {fileID: 4512885718757508387, guid: 761a9c3e620e8ca4f931c2db1144e517, type: 3}
-  _targetShipStance: 2
+  _targetShipStance: 3
   _projectileDamage: 1
   _projectileSpeed: 30
+  _range: 20
   _accuracy: 5
   _reloadTime: 1
 --- !u!1001 &999060905

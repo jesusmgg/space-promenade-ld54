@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] ShipStance _stance = ShipStance.Player;
     [SerializeField] float _acceleration = 1f;
     [SerializeField] float _deceleration = 1f;
     [SerializeField] float _topSpeed = 2f;
@@ -25,7 +26,7 @@ public class Player : MonoBehaviour
     int _allies;
 
     Camera _mainCamera;
-    readonly Collider[] _captureBuffer = new Collider[10];
+    readonly Collider[] _captureBuffer = new Collider[100];
 
     float Speed { get; set; }
 
@@ -41,7 +42,7 @@ public class Player : MonoBehaviour
 
         foreach (Weapon weapon in _weapons)
         {
-            weapon.Shoot(Vector3.zero);
+            weapon.Shoot();
         }
     }
 
@@ -92,6 +93,7 @@ public class Player : MonoBehaviour
 
     void OnDrawGizmos()
     {
+        Gizmos.color = Color.white;
         Gizmos.DrawWireSphere(transform.position, _captureRadius);
     }
 }
