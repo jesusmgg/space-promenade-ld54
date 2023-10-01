@@ -2,9 +2,8 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Ship
 {
-    [SerializeField] ShipStance _stance = ShipStance.Enemy;
     [SerializeField] EnemyBehavior _behavior;
     [SerializeField] float _speed = 1f;
     [SerializeField] float _rotationSpeed = 10f;

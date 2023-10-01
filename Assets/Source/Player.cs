@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : Ship 
 {
-    [SerializeField] ShipStance _stance = ShipStance.Player;
     [SerializeField] float _acceleration = 1f;
     [SerializeField] float _deceleration = 1f;
     [SerializeField] float _topSpeed = 2f;

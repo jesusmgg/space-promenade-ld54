@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ally : MonoBehaviour
+public class Ally : Ship
 {
     [SerializeField] Vector3 _formationOffset;
 
@@ -12,8 +12,6 @@ public class Ally : MonoBehaviour
     [SerializeField] float _captureTime;
 
     [SerializeField] List<Weapon> _weapons;
-
-    ShipStance _stance = ShipStance.Neutral;
 
     bool _isCapturing;
 
@@ -42,7 +40,7 @@ public class Ally : MonoBehaviour
             _targetPositionFluctuation = new Vector3(Random.Range(-.5f, .5f), Random.Range(-.5f, .5f));
         }
 
-        if (_stance == ShipStance.Ally && !_isCapturing)
+        if (ShipStance == ShipStance.Ally && !_isCapturing)
         {
             Transform tr = transform;
 
@@ -61,9 +59,9 @@ public class Ally : MonoBehaviour
     /// <returns>true if the ally was captured.</returns>
     public bool Capture()
     {
-        if (_stance == ShipStance.Neutral)
+        if (ShipStance == ShipStance.Neutral)
         {
-            _stance = ShipStance.Ally;
+            ShipStance = ShipStance.Ally;
             _renderer.material = _allyMaterial;
 
             StartCoroutine(AnimateCapture());

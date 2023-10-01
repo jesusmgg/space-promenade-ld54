@@ -1061,7 +1061,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0f7b502a3f42b4b281b0fa86d43ef4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stance: 0
+  ShipStance: 0
+  HitPoints: 2
   _acceleration: 2
   _deceleration: 1.5
   _topSpeed: 0.2

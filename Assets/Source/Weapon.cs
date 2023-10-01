@@ -60,32 +60,12 @@ public class Weapon : MonoBehaviour
         int colliderCount = Physics.OverlapSphereNonAlloc(transform.position, _range, _targetColliderBuffer);
         for (var i = 0; i < colliderCount; i++)
         {
-            if (_targetShipStance == ShipStance.Enemy)
+            var ship = _targetColliderBuffer[i].GetComponent<Ship>();
+            if (ship != null && (_targetShipStance == ship.Stance ||
+                                 (_targetShipStance == ShipStance.Player && ship.Stance == ShipStance.Ally)))
             {
-                var enemy = _targetColliderBuffer[i].GetComponent<Enemy>();
-                if (enemy != null)
-                {
-                    _targetPosition = enemy.transform.position;
-                    _hasTarget = true;
-                }
-            }
-            else if (_targetShipStance == ShipStance.Player)
-            {
-                var player = _targetColliderBuffer[i].GetComponent<Player>();
-                if (player == null)
-                {
-                    var ally = _targetColliderBuffer[i].GetComponent<Ally>();
-                    if (ally != null)
-                    {
-                        _targetPosition = ally.transform.position;
-                        _hasTarget = true;
-                    }
-                }
-                else
-                {
-                    _targetPosition = player.transform.position;
-                    _hasTarget = true;
-                }
+                _targetPosition = ship.transform.position;
+                _hasTarget = true;
             }
         }
 
