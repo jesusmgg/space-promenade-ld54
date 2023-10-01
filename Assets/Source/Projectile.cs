@@ -52,7 +52,14 @@ public class Projectile : MonoBehaviour
         int colliderCount = Physics.OverlapSphereNonAlloc(transform.position, _collider.radius, _collisionBuffer);
         for (var i = 0; i < colliderCount; i++)
         {
-            var ship = _collisionBuffer[i].GetComponent<Ship>();
+            Collider collider = _collisionBuffer[i];
+            if (collider.CompareTag("Wall"))
+            {
+                Destroy();
+                return;
+            }
+            
+            var ship = collider.GetComponent<Ship>();
             if (ship != null && (_targetShipStance == ship.Stance ||
                                  (_targetShipStance == ShipStance.Player && ship.Stance == ShipStance.Ally)))
             {
