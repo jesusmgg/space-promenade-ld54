@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : Ship 
+public class Player : Ship
 {
     [SerializeField] float _acceleration = 1f;
     [SerializeField] float _deceleration = 1f;
@@ -28,6 +28,8 @@ public class Player : Ship
     readonly Collider[] _captureBuffer = new Collider[100];
 
     float Speed { get; set; }
+
+    public float Allies { get; set; }
 
     void Start()
     {
@@ -78,14 +80,11 @@ public class Player : Ship
             var ally = _captureBuffer[i].GetComponent<Ally>();
             if (ally != null)
             {
-                if (ally.Capture())
-                {
-                    _allies += 1;
-                }
+                ally.Capture();
             }
         }
 
-        float currentNormalizedFov = (_fovPerAlly / _maxFov) * _allies;
+        float currentNormalizedFov = (_fovPerAlly / _maxFov) * Allies;
         _normalizedFov = Mathf.MoveTowards(_normalizedFov, currentNormalizedFov, _fovSpeed * Time.deltaTime);
         _mainCamera.fieldOfView = Mathf.Lerp(_minFov, _maxFov, _normalizedFov);
     }

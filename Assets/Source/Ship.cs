@@ -24,7 +24,7 @@ public class Ship : MonoBehaviour
         }
     }
 
-    void Destroy()
+    protected virtual void Destroy()
     {
         Destroy(gameObject);
     }

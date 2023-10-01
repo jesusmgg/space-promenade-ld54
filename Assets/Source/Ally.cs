@@ -1,17 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Ally : Ship
 {
-    [SerializeField] Vector3 _formationOffset;
-
     [SerializeField] Material _neutralMaterial;
     [SerializeField] Material _allyMaterial;
 
     [SerializeField] float _captureTime;
 
     [SerializeField] List<Weapon> _weapons;
+
+    Vector3 _formationOffset;
 
     bool _isCapturing;
 
@@ -35,9 +36,9 @@ public class Ally : Ship
 
     void Update()
     {
-        if (Random.value > .99f)
+        if (Random.value > .9f)
         {
-            _targetPositionFluctuation = new Vector3(Random.Range(-.5f, .5f), Random.Range(-.5f, .5f));
+            _targetPositionFluctuation = new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f));
         }
 
         if (Stance == ShipStance.Ally && !_isCapturing)
@@ -56,19 +57,19 @@ public class Ally : Ship
         }
     }
 
-    /// <returns>true if the ally was captured.</returns>
-    public bool Capture()
+    public void Capture()
     {
         if (Stance == ShipStance.Neutral)
         {
+            _player.Allies++;
+            float offsetDistance = 2f + _player.Allies / 2f;
+            _formationOffset = Util.GetRandomVector3(-offsetDistance, offsetDistance);
+
             Stance = ShipStance.Ally;
             _renderer.material = _allyMaterial;
 
             StartCoroutine(AnimateCapture());
-            return true;
         }
-
-        return false;
     }
 
     IEnumerator AnimateCapture()
@@ -91,5 +92,11 @@ public class Ally : Ship
         }
 
         _isCapturing = false;
+    }
+
+    protected override void Destroy()
+    {
+        _player.Allies--;
+        base.Destroy();
     }
 }
