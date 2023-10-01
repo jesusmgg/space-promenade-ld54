@@ -36,7 +36,7 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        _formationOffset = Util.GetRandomVector3(-5f, 5f);
+        _formationOffset = Util.GetRandomVector3(-10f, 10f);
         _targetPosition = transform.position;
         UpdateTarget();
     }
@@ -100,6 +100,12 @@ public class Enemy : MonoBehaviour
             }
             case EnemyBehavior.FollowLeader:
             {
+                if (_leaderEnemy == null)
+                {
+                    _behavior = EnemyBehavior.MoveRandomly;
+                    break;
+                }
+
                 Transform leaderTransform = _leaderEnemy.transform;
                 _targetPosition = leaderTransform.position + _formationOffset;
                 break;
