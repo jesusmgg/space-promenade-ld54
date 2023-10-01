@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class Enemy : Ship
@@ -9,7 +10,9 @@ public class Enemy : Ship
     [SerializeField] EnemyBehavior _behavior;
     [SerializeField] float _speed = 1f;
     [SerializeField] float _rotationSpeed = 10f;
-    [SerializeField] Collider _targetAreaCollider;
+
+    [FormerlySerializedAs("_targetAreaCollider")] [SerializeField]
+    public Collider TargetAreaCollider;
 
     /// <summary>
     /// Follow this one.
@@ -96,7 +99,12 @@ public class Enemy : Ship
         {
             case EnemyBehavior.MoveRandomly:
             {
-                _targetPosition = Util.GetRandomPointInBounds(_targetAreaCollider);
+                _targetPosition = Util.GetRandomPointInBounds(TargetAreaCollider);
+                Vector3 localScale = TargetAreaCollider.transform.localScale;
+                _targetPosition -= TargetAreaCollider.bounds.center / 4f;
+                _targetPosition.x /= localScale.x;
+                _targetPosition.z /= localScale.z;
+                _targetPosition = TargetAreaCollider.transform.TransformPoint(_targetPosition);
                 _targetPosition.y = 0f;
                 StartCoroutine(CheckForWallsInTargetDirection());
                 break;
