@@ -51,7 +51,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hitPoints: 2
   _shipStance: 2
-  _formationOffset: {x: 3.85, y: 0, z: -3.64}
   _neutralMaterial: {fileID: 2100000, guid: e58095d91a19f9743bc30181e83fa531, type: 2}
   _allyMaterial: {fileID: 2100000, guid: c0a9630c8d772644289ae36ba095ac4f, type: 2}
   _captureTime: 1.5
@@ -147,8 +146,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.94, y: 1, z: 1.85}
+  m_Center: {x: 0, y: 0, z: 0.45}
 --- !u!54 &1002904355777415445
 Rigidbody:
   m_ObjectHideFlags: 0

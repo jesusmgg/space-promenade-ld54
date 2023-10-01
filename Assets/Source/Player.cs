@@ -20,6 +20,7 @@ public class Player : Ship
 
     float _normalizedFov;
 
+    bool _hasEngineOn;
     Vector3 _mousePos;
 
     int _allies;
@@ -49,6 +50,13 @@ public class Player : Ship
 
     void UpdateTransform()
     {
+        // Engines
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            _hasEngineOn = !_hasEngineOn;
+        }
+        float engine = _hasEngineOn ? 1f : 0f;
+
         // Get mouse position
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
         if (_mouseCollider.Raycast(ray, out RaycastHit hitData, 1000))
@@ -56,12 +64,13 @@ public class Player : Ship
             _mousePos = hitData.point;
         }
 
-        // Move ship
         Vector3 flatMousePos = _mousePos;
         flatMousePos.y = 0f;
+
+        // Move ship
         Vector3 direction = (flatMousePos - transform.position).normalized;
 
-        Speed += (_acceleration * Time.deltaTime * Input.GetAxis("Fire2"));
+        Speed += _acceleration * Time.deltaTime * engine;
         Speed -= _deceleration * Time.deltaTime;
         Speed = Mathf.Clamp(Speed, 0f, _topSpeed);
 
