@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -7,6 +6,8 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] ShipStance _stance = ShipStance.Enemy;
     [SerializeField] EnemyBehavior _behavior;
+    [SerializeField] float _speed = 1f;
+    [SerializeField] float _rotationSpeed = 10f;
 
     /// <summary>
     /// Follow this one.
@@ -20,8 +21,25 @@ public class Enemy : MonoBehaviour
     Vector3 _targetPositionFluctuation;
     Vector3 _currentPositionFluctuation;
 
-    Vector3 TargetPosition => _leaderEnemy.transform.position + _formationOffset;
-    Quaternion TargetRotation => _leaderEnemy.transform.rotation;
+    Vector3 _targetPosition;
+
+    Arena _arena;
+    Collider _arenaCollider;
+    Player _player;
+
+    void Awake()
+    {
+        _arena = FindFirstObjectByType<Arena>();
+        _arenaCollider = _arena.GetComponent<Collider>();
+        _player = FindFirstObjectByType<Player>();
+    }
+
+    void Start()
+    {
+        _formationOffset = Util.GetRandomVector3(-5f, 5f);
+        _targetPosition = transform.position;
+        UpdateTarget();
+    }
 
     void Update()
     {
@@ -30,27 +48,61 @@ public class Enemy : MonoBehaviour
             weapon.Shoot(Vector3.zero);
         }
 
-        if (_behavior == EnemyBehavior.Moving)
+        if (_behavior != EnemyBehavior.Static)
         {
-            if (_leaderEnemy != null)
+            if (Vector3.Distance(transform.position, _targetPosition + _currentPositionFluctuation) <= float.Epsilon)
             {
-                Transform tr = transform;
-
-                if (Random.value > .99f)
-                {
-                    _targetPositionFluctuation = new Vector3(Random.Range(-.5f, .5f), Random.Range(-.5f, .5f));
-                }
-
-                _currentPositionFluctuation =
-                    Vector3.MoveTowards(_currentPositionFluctuation, _targetPositionFluctuation, Time.deltaTime * 0.1f);
-
-                tr.position = TargetPosition + _currentPositionFluctuation;
-                tr.rotation = TargetRotation;
+                UpdateTarget();
             }
 
-            else
+            Transform tr = transform;
+
+            if (Random.value > .99f)
             {
-                // Move to random position.
+                _targetPositionFluctuation = new Vector3(Random.Range(-.5f, .5f), 0f, Random.Range(-.5f, .5f));
+            }
+
+            _currentPositionFluctuation =
+                Vector3.MoveTowards(_currentPositionFluctuation, _targetPositionFluctuation, Time.deltaTime * 0.1f);
+
+            Vector3 adjustedTargetPos = _targetPosition + _currentPositionFluctuation;
+            Vector3 position = tr.position;
+            Vector3 newPos = Vector3.MoveTowards(
+                position,
+                adjustedTargetPos,
+                Time.deltaTime * _speed);
+            newPos.y = 0f;
+
+            tr.position = newPos;
+
+            Vector3 direction = (newPos - position).normalized;
+            Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+            Quaternion newRot = Quaternion.RotateTowards(tr.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
+
+            tr.rotation = newRot;
+        }
+    }
+
+    void UpdateTarget()
+    {
+        switch (_behavior)
+        {
+            case EnemyBehavior.MoveRandomly:
+            {
+                _targetPosition = Util.GetRandomPointInBounds(_arenaCollider);
+                _targetPosition.y = 0f;
+                break;
+            }
+            case EnemyBehavior.SeekPlayer:
+            {
+                _targetPosition = _player.transform.position + Util.GetRandomVector3(-5f, 5f);
+                break;
+            }
+            case EnemyBehavior.FollowLeader:
+            {
+                Transform leaderTransform = _leaderEnemy.transform;
+                _targetPosition = leaderTransform.position + _formationOffset;
+                break;
             }
         }
     }
@@ -59,5 +111,7 @@ public class Enemy : MonoBehaviour
 public enum EnemyBehavior
 {
     Static,
-    Moving,
+    MoveRandomly,
+    SeekPlayer,
+    FollowLeader
 }
