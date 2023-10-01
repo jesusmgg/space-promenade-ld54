@@ -3,19 +3,20 @@
 public class Projectile : MonoBehaviour
 {
     [SerializeField] float _maxLifeTimeSeconds = 10;
-    [SerializeField] ShipStance _targetShipStace;
+    [SerializeField] ShipStance _targetShipStance;
 
     int _damage;
     float _speed;
-    Vector3 _targetPosition;
+    Vector3 _direction;
     float _lifeTimeLeft;
     bool _isSetup;
 
-    Collider _collider;
+    SphereCollider _collider;
+    Collider[] _collisionBuffer = new Collider[10];
 
     void Awake()
     {
-        _collider = GetComponent<Collider>();
+        _collider = GetComponent<SphereCollider>();
     }
 
     void Start()
@@ -27,14 +28,10 @@ public class Projectile : MonoBehaviour
     {
         if (_isSetup)
         {
-            float maxPosDelta = _speed * Time.deltaTime;
-            Vector3 newPos = Vector3.MoveTowards(transform.position, _targetPosition, maxPosDelta);
-            transform.position = newPos;
-
-            if (Vector3.Distance(transform.position, _targetPosition) < float.Epsilon)
-            {  
-                Destroy();
-            }
+            Vector3 translation = _direction * (_speed * Time.deltaTime);
+            transform.Translate(translation);
+            
+            CheckCollision();
         }
     }
 
@@ -43,11 +40,26 @@ public class Projectile : MonoBehaviour
     /// </summary>
     public void Setup(Vector3 targetPosition, ShipStance targetShipStance, int damage, float speed)
     {
-        _targetPosition = targetPosition;
-        _targetShipStace = targetShipStance;
+        _direction = (targetPosition - transform.position).normalized;
+        _targetShipStance = targetShipStance;
         _damage = damage;
         _speed = speed;
         _isSetup = true;
+    }
+
+    void CheckCollision()
+    {
+        int colliderCount = Physics.OverlapSphereNonAlloc(transform.position, _collider.radius, _collisionBuffer);
+        for (var i = 0; i < colliderCount; i++)
+        {
+            var ship = _collisionBuffer[i].GetComponent<Ship>();
+            if (ship != null && (_targetShipStance == ship.Stance ||
+                                 (_targetShipStance == ShipStance.Player && ship.Stance == ShipStance.Ally)))
+            {
+                ship.HitPoints -= _damage;
+                Destroy();
+            }
+        }
     }
 
     void Destroy()
