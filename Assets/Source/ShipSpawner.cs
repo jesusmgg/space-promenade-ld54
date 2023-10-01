@@ -21,6 +21,7 @@ public class ShipSpawner : Ship
     {
         _player = FindFirstObjectByType<Player>();
         ParticleManager = FindFirstObjectByType<ParticleManager>();
+        AudioManager = FindFirstObjectByType<AudioManager>();
     }
 
     void Start()

@@ -4,7 +4,6 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] float _maxLifeTimeSeconds = 10;
     [SerializeField] ShipStance _targetShipStance;
-    [SerializeField] ParticleSystem _hitParticleSystem;
 
     int _damage;
     float _speed;
@@ -16,16 +15,19 @@ public class Projectile : MonoBehaviour
     Collider[] _collisionBuffer = new Collider[10];
 
     ParticleManager _particleManager;
+    AudioManager _audioManager;
 
     void Awake()
     {
         _collider = GetComponent<SphereCollider>();
         _particleManager = FindFirstObjectByType<ParticleManager>();
+        _audioManager = FindFirstObjectByType<AudioManager>();
     }
 
     void Start()
     {
         Invoke(nameof(Destroy), _maxLifeTimeSeconds);
+        _audioManager.PlaySfx(_audioManager.LaserClip, transform.position, true);
     }
 
     void Update()
@@ -85,6 +87,7 @@ public class Projectile : MonoBehaviour
 
     void Destroy()
     {
+        _audioManager.PlaySfx(_audioManager.HitClip, transform.position, true);
         GameObject.Destroy(gameObject);
     }
 }
