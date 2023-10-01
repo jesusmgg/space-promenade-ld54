@@ -5,6 +5,11 @@ public class Ship : MonoBehaviour
     [SerializeField] protected int _hitPoints = 2;
     [SerializeField] ShipStance _shipStance;
 
+    protected Collider Collider;
+    float _collisionRadius;
+
+    Collider[] _wallCollisionBuffer = new Collider[100];
+
     public ShipStance Stance
     {
         get => _shipStance;
@@ -18,6 +23,27 @@ public class Ship : MonoBehaviour
         {
             _hitPoints = value;
             if (_hitPoints <= 0)
+            {
+                Destroy();
+            }
+        }
+    }
+    
+    protected virtual void Awake()
+    {
+        Collider = GetComponent<Collider>();
+        _collisionRadius = Collider.bounds.extents.z;
+    }
+
+    protected virtual void Update()
+    {  
+        // Check wall collision
+        int colliderCount = Physics.OverlapSphereNonAlloc(transform.position, _collisionRadius, _wallCollisionBuffer);
+
+        for (var i = 0; i < colliderCount; i++)
+        {
+            var wall = _wallCollisionBuffer[i].GetComponent<Wall>();
+            if (wall != null)
             {
                 Destroy();
             }

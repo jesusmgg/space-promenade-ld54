@@ -37,8 +37,10 @@ public class Player : Ship
         _mainCamera = Camera.main;
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
+        
         UpdateTransform();
         UpdateCaptures();
 

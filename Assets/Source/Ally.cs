@@ -26,16 +26,20 @@ public class Ally : Ship
     Vector3 TargetPosition => _playerTransform.position + _formationOffset;
     Quaternion TargetRotation => _playerTransform.rotation;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+        
         _renderer = GetComponent<MeshRenderer>();
 
         _player = FindFirstObjectByType<Player>();
         _playerTransform = _player.transform;
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
+        
         if (Random.value > .9f)
         {
             _targetPositionFluctuation = new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f));

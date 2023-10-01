@@ -26,8 +26,10 @@ public class Enemy : Ship
     Collider _arenaCollider;
     Player _player;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+        
         _arena = FindFirstObjectByType<Arena>();
         _arenaCollider = _arena.GetComponent<Collider>();
         _player = FindFirstObjectByType<Player>();
@@ -40,8 +42,10 @@ public class Enemy : Ship
         UpdateTarget();
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
+        
         foreach (Weapon weapon in _weapons)
         {
             weapon.Shoot();
