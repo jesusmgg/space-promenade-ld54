@@ -13,7 +13,10 @@ public class RtsCamera : MonoBehaviour
 
     void Update()
     {
-        transform.position = _followTarget.transform.position + _offset;
+        if (_followTarget != null)
+        {
+            transform.position = _followTarget.transform.position + _offset;
+        }
     }
 
     void RecalculateOffset()

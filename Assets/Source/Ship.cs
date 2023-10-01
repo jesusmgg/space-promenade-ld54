@@ -28,15 +28,15 @@ public class Ship : MonoBehaviour
             }
         }
     }
-    
+
     protected virtual void Awake()
     {
         Collider = GetComponent<Collider>();
-        _collisionRadius = Collider.bounds.extents.z;
+        _collisionRadius = Collider != null ? Collider.bounds.extents.z : 0f;
     }
 
     protected virtual void Update()
-    {  
+    {
         // Check wall collision
         int colliderCount = Physics.OverlapSphereNonAlloc(transform.position, _collisionRadius, _wallCollisionBuffer);
 
@@ -50,7 +50,7 @@ public class Ship : MonoBehaviour
         }
     }
 
-    protected virtual void Destroy()
+    public virtual void Destroy()
     {
         Destroy(gameObject);
     }

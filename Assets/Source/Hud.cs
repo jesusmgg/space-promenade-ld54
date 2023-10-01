@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Hud : MonoBehaviour
 {
+    [SerializeField] TextMeshProUGUI _flagshipHpText;
     [SerializeField] TextMeshProUGUI _fleetSizeText;
     [SerializeField] TextMeshProUGUI _enemyBasesText;
 
@@ -10,7 +11,11 @@ public class Hud : MonoBehaviour
 
     void Update()
     {
-        _fleetSizeText.text = $"{_player.Allies + 1}";
-        _enemyBasesText.text = $"{_player.EnemySpawnerTarget}";
+        if (_player != null)
+        {
+            _flagshipHpText.text = $"{_player.HitPoints}";
+            _fleetSizeText.text = $"{_player.AllyCount + 1}";
+            _enemyBasesText.text = $"{_player.TargetSpawnersLeft}";
+        }
     }
 }

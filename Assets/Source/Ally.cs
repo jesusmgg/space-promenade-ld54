@@ -29,7 +29,7 @@ public class Ally : Ship
     protected override void Awake()
     {
         base.Awake();
-        
+
         _renderer = GetComponent<MeshRenderer>();
 
         _player = FindFirstObjectByType<Player>();
@@ -39,7 +39,7 @@ public class Ally : Ship
     protected override void Update()
     {
         base.Update();
-        
+
         if (Random.value > .9f)
         {
             _targetPositionFluctuation = new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f));
@@ -65,8 +65,8 @@ public class Ally : Ship
     {
         if (Stance == ShipStance.Neutral)
         {
-            _player.Allies++;
-            float offsetDistance = 2f + _player.Allies / 2f;
+            _player.AllyList.Add(this);
+            float offsetDistance = 2f + _player.AllyCount / 2f;
             _formationOffset = Util.GetRandomVector3(-offsetDistance, offsetDistance);
 
             Stance = ShipStance.Ally;
@@ -98,9 +98,13 @@ public class Ally : Ship
         _isCapturing = false;
     }
 
-    protected override void Destroy()
+    public override void Destroy()
     {
-        _player.Allies--;
+        if (_player != null)
+        {
+            _player.AllyList.Remove(this);
+        }
+
         base.Destroy();
     }
 }
