@@ -51,6 +51,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stance: 2
   _behavior: 1
+  _speed: 10
+  _rotationSpeed: 100
   _leaderEnemy: {fileID: 0}
   _weapons:
   - {fileID: 7141303669425517973}
