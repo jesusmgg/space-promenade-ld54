@@ -78,7 +78,9 @@ public class Weapon : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.color = _hasTarget ? Color.red : Color.magenta;
+        Color color = _hasTarget ? Color.red : Color.magenta;
+        color.a = .1f;
+        Gizmos.color = color;
         Gizmos.DrawWireSphere(transform.position, _range);
     }
 }

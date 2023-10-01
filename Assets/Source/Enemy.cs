@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -7,6 +9,7 @@ public class Enemy : Ship
     [SerializeField] EnemyBehavior _behavior;
     [SerializeField] float _speed = 1f;
     [SerializeField] float _rotationSpeed = 10f;
+    [SerializeField] Collider _targetAreaCollider;
 
     /// <summary>
     /// Follow this one.
@@ -23,15 +26,15 @@ public class Enemy : Ship
     Vector3 _targetPosition;
 
     Arena _arena;
-    Collider _arenaCollider;
     Player _player;
+
+    RaycastHit[] _raycastHitBuffer = new RaycastHit[100];
 
     protected override void Awake()
     {
         base.Awake();
-        
+
         _arena = FindFirstObjectByType<Arena>();
-        _arenaCollider = _arena.GetComponent<Collider>();
         _player = FindFirstObjectByType<Player>();
     }
 
@@ -45,7 +48,7 @@ public class Enemy : Ship
     protected override void Update()
     {
         base.Update();
-        
+
         foreach (Weapon weapon in _weapons)
         {
             weapon.Shoot();
@@ -86,19 +89,22 @@ public class Enemy : Ship
         }
     }
 
-    void UpdateTarget()
+    void UpdateTarget(EnemyBehavior? forcedBehavior = null)
     {
-        switch (_behavior)
+        EnemyBehavior behavior = forcedBehavior ?? _behavior;
+        switch (behavior)
         {
             case EnemyBehavior.MoveRandomly:
             {
-                _targetPosition = Util.GetRandomPointInBounds(_arenaCollider);
+                _targetPosition = Util.GetRandomPointInBounds(_targetAreaCollider);
                 _targetPosition.y = 0f;
+                StartCoroutine(CheckForWallsInTargetDirection());
                 break;
             }
             case EnemyBehavior.SeekPlayer:
             {
                 _targetPosition = _player.transform.position + Util.GetRandomVector3(-5f, 5f);
+                StartCoroutine(CheckForWallsInTargetDirection());
                 break;
             }
             case EnemyBehavior.FollowLeader:
@@ -111,9 +117,37 @@ public class Enemy : Ship
 
                 Transform leaderTransform = _leaderEnemy.transform;
                 _targetPosition = leaderTransform.position + _formationOffset;
+                StartCoroutine(CheckForWallsInTargetDirection());
                 break;
             }
         }
+    }
+
+    IEnumerator CheckForWallsInTargetDirection()
+    {
+        yield return new WaitForSeconds(.1f);
+        Vector3 position = transform.position;
+        Vector3 direction = _targetPosition - position;
+
+        int hitCount = Physics.RaycastNonAlloc(position, direction.normalized, _raycastHitBuffer, direction.magnitude);
+        for (var i = 0; i < hitCount; i++)
+        {
+            if (_raycastHitBuffer[i].collider.CompareTag("Wall"))
+            {
+                UpdateTarget(EnemyBehavior.MoveRandomly);
+            }
+        }
+    }
+
+    void OnDrawGizmos()
+    {
+        Color color = Color.green;
+        color.a = .1f;
+        Gizmos.color = color;
+
+        Vector3 position = transform.position;
+        Vector3 direction = _targetPosition - position;
+        Gizmos.DrawRay(position, direction);
     }
 }
 
